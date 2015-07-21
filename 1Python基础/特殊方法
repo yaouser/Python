@@ -1,0 +1,165 @@
+=============================================================================
+基础知识
+========
+x = MyClass()		x.__init__()		初始化一个实例
+repr(x)			x.__repr__()		字符串的“官方”表现形式
+str(x)			x.__str__()		字符串的“非正式”值
+bytes(x)		x.__bytes__()		字节数据的“非正式”值
+format(x,format_spec)	x.__format__(format_spec)	格式化字符串值
+对__init__()方法调用后发生在实例被创建之后。如要控制实际创建进程，这时候需要
+使用__new__()方法。
+约定，__repr__()方法所返回的字符串为合法的Python表达式。
+在调用print(x)的同时也调用了__str__()方法。
+Python标准类库中的decimal.py提供了自己的__format__()方法。
+=============================================================================
+迭代器方法
+==========
+使用__iter__()和__next__()方法可以从零开始创建迭代器。
+iter(seq)		seq.__iter__()		遍历某个序列
+next(seq)		seq.__next__()		从迭代器中获取下一个值
+reversed(seq)		seq.__reversed__()	按逆序创建一个迭代器
+无论何时创建迭代器都将调用__iter__()方法。这是用初始值对迭代器进行初始化的。
+for循环中使用的就是迭代器。
+for x in seq:
+Python3中会调用seq.__iter__()来创建一个迭代器，然后对迭代器调用__next__()方法
+以获取x的每个值。当__next__()方法引发StopIteration例外时，for循环正常结束。
+=============================================================================
+属性的计算方法
+==============
+x.my_property		x.__getattribute__('my_property')获取一个计算属性（无条件）
+x.my_property		x.__getattr__('my_property')获取一个计算属性（后备）
+x.my_property = value	x.__setattr__('my_property',value)设置某属性
+del x.my_property	x.__delattr__('my_property')删除某属性
+dir(x)			x.__dir__()		列出所有属性和方法
+方法__getattr__()在Python中将只在正常的位置查询属性时才会调用它。
+方法__dir__()对于想使用你的类但不想深入内部的来说，该方法很有用。
+=============================================================================
+函数类似方法
+============
+my_instance()	my_instance.__call__()	像调用函数一样“调用”一个实例
+=============================================================================
+序列类似方法
+============
+lex(seq)	seq.__len__()		序列的长度
+x in seq	seq.__contains__()	了解某序列是否包含特定的值
+=============================================================================
+字典类似方法
+============
+x[key]			x.__getitem__(key)		通过键来获取值
+x[key] = value		x.__setitem__(key,value)	通过键来设置值
+del x[key]		x.__delitem__(key)		删除一个键值对
+x[nonexistent_key]	x.__missing__(nonexistent_key)	为缺失键提供默认值
+=============================================================================
+数值类似方法
+============
+x + y			x.__add__(y)		加法
+x - y 			x.__sub__(y)		减法
+x * y			x.__mul__(y)		乘法
+x / y			x.__truediv__(y)	除法
+x // y			x.__floordiv__(y)	地板除
+x % y			x.__mod__(y)		取模（取余）
+divmod(x,y)		x.__divmod__(y)		地板除&取模
+x ** y			x.__pow__(y)		乘幂
+x << y			x.__lshift__(y)		左位移
+x >> y 			x.__rshitf__(y)		右位移
+x & y			x.__and__(y)		按位and
+x ^ y			x.__xor__(y)		按位xor
+x | y			x.__or__(y)		按位or
+************************************************************************
+x + y			y.__radd__(x)		加法
+x - y 			y.__rsub__(x)		减法
+x * y 			y.__rmul__(x)		乘法
+x / y			y.__rmul__(x)		除法
+x // y			y.__rfloordiv__(x)	地板除
+x % y			y.__rmod__(x)		取模（取余）
+divmod(x,y)		y.__rdivmod__(x)	地板除&取模
+x ** y			y.__rpow__(x)		乘幂
+x << y			y.__rlshitf__(x)	左位移
+x >> y			y.__rrshitf__(x)	右位移
+x & y			y.__rand__(x)		按位and
+x ^ y			y.__rxor__(x)		按位xor
+x | y			y.__ror__(x)		按位or
+************************************************************************
+x += y			x.__iadd__(y)		原地加法
+x -= y			x.__isub__(y)		原地减法
+x *= y			x.__imul__(y)		原地乘法
+x /= y			x.__itruediv__(y)	原地除法
+x //= y			x.__ifloordiv__(y)	原地地板除法
+x %= y			x.__imod__(y)		原地取模
+x **= y			x.__ipow__(y)		原地乘幂
+x <<= y			x.__ilshift(y)		原地左位移
+x >>= y			x.__irshift(y)		原地右位移
+x &= y			x.__iand__(y)		原地按位and
+x ^= y			x.__ixor__(y)		原地按位xor
+x |= y			x.__ior__(y)		原地按位or
+************************************************************************
+一元数学运算
+************
+-x			x.__neg__()		负数
++x			x.__pos__()		正数
+abs(x)			x.__abs__()		绝对值
+~x			x.__invert__()		取反
+complex(x)		x.__complex__()		复数
+int(x)			x.__int__()		整数转换
+float(x)		x.__float__()		浮点数
+round(x)		x.__round__()		四舍五入至最近的整数
+round(x,n)		x.__round__(n)		四舍五入至最近的n位小数
+math.ceil(x)		x.__ceil__()		>= x的最小整数
+math.floor(x)		x.__floor__()		<= x的最大整数
+math.trunc(x)		x.__trunc__()		对x朝向0取整
+a_list[x]		a_list[x.__index__()	作为列表索引的数字
+=============================================================================
+可比较的方法
+============
+x == y			x.__eq__(y)		相等
+x != y			x.__ne__(y)		不相等
+x < y			x.__lt__(y)		小于
+x <= y			x.__le__(y)		小于或等于
+x > y			x.__gt__(y)		大于
+x >= y			x.__ge__(y)		大于或等于
+if x:			x.__bool__()		布尔上上下文环境中的真值
+=============================================================================
+可序列化的方法
+==============
+copy.copy(x)		x.__copy__()		自定义对象的复制
+copy.deepcopy(x)	x.__deepcopy()		自定义对象的深度复制
+pickle.dump(x,file)	x.__getstate__()	在pickling之前获取对象的状态
+pickle.dump(x,file)	x.__reduce__()		序列化某对象
+pickle.dump(x,file,protocol_version)	x.__reduce_ex__(protocol_version)
+x = pickle.load(file)	x.__getnewargs__()	控制unpickling过程中对象创建方式
+x = pickle.load(file)	x.__setstate__()	在unpickling之后还原对象的状态
+要重建序列化对象，Python需要创建一个和被序列化的对象一样的新对象，然后设置新
+新对象的所有属性。__getnewargs__()方法控制新对象的创建过程，而__setstate__()
+方法控制属性值的还原方式。
+=============================================================================
+with语句块中的方法
+==================
+with x:		x.__enter__()		在进入with语块时进行一些特别操作
+with x:		x.__exit__()		在退出with语块时进行一些特别操作
+with语块定义了运行时上下文环境，在执行with语句时将“进入”该上下文环境，而执行
+该语块中的最后一条语句将“退出”该上下文环境。在自动关闭文件和重定向标准输出中
+有应用。
+=============================================================================
+判读类的方法
+============
+x = MyClass()		x.__new__()	类构造器
+del x			x.__del__()	类析构器
+			x.__slots__()	只定义特定集合的某些属性
+hash(x)			x.__hash__()	自定义散列值
+x.color			type(x).__dict__['color'].__get__(x,type(x))
+获取某个属性的值
+x.color = 'Whip'	type(x).__dict__['color'].__set__(x,'Whip')
+设置某个属性的值
+del x.color		type(x).__dict__['color'].__del__(x)
+删除某个属性
+iiinstance(x,MyClass)	MyClass.__instancecheck__(x)	
+控制某个对象是否是该对象的实例your class
+issubclass(C,MyClass)	MyClass.__subclasscheck__(C)
+控制某个类是否是该类的子类
+issubclass(C,MyABC)	MyABC.__subclasshook__(C)
+控制某个类是否是该抽象基类的子类
+***********************************
+确切知道Python如何调用__del__()特别方法，必须清楚Python如何在内存中跟踪对象。
+需要了解Python垃圾收集和类析构器。
+=============================================================================
+=============================================================================
