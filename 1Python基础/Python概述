@@ -1,0 +1,218 @@
+=============================================================================
+Python解释器
+============
+Python是一门简单易学的动态类型计算机语言。其语法简单优雅，有跨平台，拥有大量
+第三方模块库的特性成为流行的脚本语言。Python的解释器是由C语言编写的，所以可以
+使用C为解释器添加内置函数和模块。Python的源码文件默认是UTF-8的，但也可定义。
+#!/usr/bin/python
+#-*-coding:encoding-*-
+==============
+Python流程控制
+==============
+
+while ...:
+	.........
+
+if ...:
+	.........
+elif ...:
+	.........
+elif ...:
+	.........
+else:
+	.........
+
+
+for ... in ...:
+	.........
+
+Python中有一个内置生成数据序列的函数range()可以与for搭配使用
+for ... in range(...):
+	.........
+函数range可以有三个参数 开始 结束 步长 range(0,10,3)
+a = ['b','c','d','e']
+for i in range(len(a)):
+	print(i,a[i])
+break用于跳出最近一级for或while循环，continue表示继续执行下一次迭代。
+pass语句什么也不做。
+def关键字用于定义一个函数。
+def ...(...):
+	.........
+lambda关键字可以创建短小的匿名函数,lambda可以用于任何需要的函数对象，但只能有
+一个单独的表达式，语义上讲，他们只是普通函数定义中的一个语法技巧，类似于嵌套
+函数定义，并且lambda形式可以从外部作用域引用变量。
+lambda a,b: a+b
+def make_incrementor(n):
+	return lambda x:x+n
+文档字符串 """......................"""
+(in)  (not in) 这两个关键字是审核值是否在一个区间之内。     
+(is)  (is not) 这两个关键字是比较两个对象是否相同。
+========
+数据结构
+========
+
+列表对象的方法
+list.append(x)  list.extend(L)  list.insert(i,x)  list.remove(x)  
+list.pop([i])从列表的指定位置删除元素，并将其返回。 list.clear()  
+list.index(x)  list.count(x)  list.sort()  list.reverse() 倒排  list.copy()
+使用列表的list.append(x)和list.pop()两个方法来做堆栈使用
+要实现队列，使用collections.deque，他为在首尾两端快速插入和删除而设计。
+>>>from collections import deque
+>>>queue = deque(["Eric","John","Michael"])
+>>>queue.append("Terry")
+>>>queue.append("Graham")
+>>>queue.popleft()
+'Eric'
+>>>queue.popleft()
+'Joh'
+>>>queue
+deque(['Michael','Terry','Graham'])
+
+列表推导式
+[x**2 for x in range(10)]
+[(x,y) for x in [1,2,3] for y in [3,1,4] if x != y]
+>>>from math import pi
+>>>[str(round(pi,i)) for i in range(1,6)]
+
+嵌套的列表推导式
+>>>matrix = [
+	[1,2,3,4],
+	[5,6,7,8],
+	[9,10,11,12],
+	]
+>>>[[row[i] for row in matrix] for i in range(4)]
+[[1,5,9],[2,6,10],[3,7,11],[4,8,12]]
+另一种的方法
+>>>list(zip(*matrix))
+[(1,5,9),(2,6,10),(3,7,11),(4,8,12)]
+
+del语句可以从列表中删除切片或清空整个列表。 
+del a[0] 
+del a[2,4]
+del a[:]
+del a
+
+元组与列表类似，但是元组不可变，这样元组可以表示特殊的数据，如坐标，数据库中
+的员工记录。
+
+集合是一个无序不重复元素的集。基本功能包括关系测试和消除重复元素。集合对象还
+支持union(联合）,intersection(交),difference(差)和sysmmetric difference(对称
+差集)等数学运算。注意：创建空集合使用set()而不是{}，而后者用于创建空字典。
+>>>a = set('abracadabra')
+>>>b = set('alacazam')
+>>>a		#unique letters in a
+>>>a-b		#letters in a but not in b
+>>>a|b		#letters in either a or b
+>>>a&b		#letters in both a and b
+>>>a^b		#letters in a or b but not both
+集合推导式
+>>>a = {x for x in 'abracadabra' if x not in 'abc'}
+>>>a
+{'r','d'}
+
+字典为无序的键值对(key:value)集合。
+对一个字典执行list(d.keys())将返回一个字典中所有关键字组成的无序列表。
+如果要想排序，只需使用sorted(d.keys())。
+使用in关键字可以检查字典中是否存在某个关键字。
+dict()构造函数可以直接从key-value对中创建字典。
+字典推导式
+>>>{x:x**2 for x in (2,4,6)}
+{2:4,4:16,6:36}
+字典循环 
+dic.items()  enumerate() zip()同时循环多个字典 reversed() sorted()
+>>>for k,v in dic.items():
+>>>for i,v in enumerate(['tic','tac','toe']):
+>>>for d1,d2... in zip(dic1,dic2...):
+====
+模块
+====
+模块的模块名（作为一个字符串）可以由全局变量__name__得到。
+可导入的模块中一定有 if __name__ == "__main__":
+为了让Python将目录当做内容包，目录中必须包含__init__.py文件。防止命名冲突。
+最简单的情况下，只需要一个空的__init__.py文件即可。当然他也可以执行包的初始化
+代码，或者定义稍后介绍的__all__变量。
+执行from package import *时，如果包中的__init__.py代码定义了一个名为__all__的
+列表，就会按照列表中给出的模块名进行导入。
+===
+I/O
+===
+Python可以将任意值转为字符串并将他传入repr()或str()函数。
+str()适用于人阅读形式，repr()供解释器读取形式。
+str.rjust()表示把字符串输出到一列，并通过向左侧填充空格来使其右对齐。
+str.ljust()和str.centre()同str.rjust()类似，l表示left，r表示right。
+str.zfill()表示向数值的字符串表达左侧填充0。
+>>>'-3.14'.zfill(7)
+'-003.14'
+>>>'3.14159265359'.zfill(5)
+'3.14159265359'
+
+str.format()同print()配合使用，放在print()函数内部，在print的括号内部中的大括
+号{}和其中的字符会被替换成传入str.format()的参数。函数运用比较灵活，大括号中的
+数值指明使用传入str.format()方法的对象中的哪一个。数值 关键字参数 预先格式化
+>>>print('{0} and {1}'.format('spam','eggs'))
+>>>print('{1} and {0}'.format('spam','eggs'))
+>>>print('This {food} is {adjective}.'.format(food='spam',adjective='horrible'))
+>>>print('The story of {0},{1},and {other}.'.format('Bill','Manfred',other='Georg'))
+'!a'(应用asxii())'!s'(应用str())'!r'(应用repr())可以在格式化之前转换值。
+>>>print('The value of PI is approximately {}.'format(math.pi))
+>>>print('The value of PI is approximately {!r}.'.format(math.pi))
+字段名后允许可选的':'和格式指令，其后加一个整数可限定字段的最小宽度。
+>>>print('The value of PI is approximately {0:.3f}'.format(math.pi))
+>>>table = {'Sjoerd':4127,'Jack':4098,'Dcab':7678}
+>>>for name,phone in table.iterms():
+	print('{0:10}==>{1:10d}'.format(name,phone))
+
+函数open()返回文件对象，通常用法需要两个参数：open(filename,mode)。
+mode参数可为r(read),w(write),a(append)r+(read+write)b(binary),mode默认为r。
+f.read(size)若没有size时，就会读取并返回整个文件。
+f.readline()从文件中读取单独一行。
+可以循环遍历文件对象来读取文件中的每一行。这是一种内存高效，快速的方式。
+>>>for line in f:
+	print(line,end='')
+如果想要把文件中的所有行读到一个列表中，可以使用list(f)或者f.readlines()。
+f.tell()返回一个整数，代表文件对象在文件中的指针位置。
+f.seek(offset,from_what)  f.close()
+用关键字with处理文件对象是个好习惯，在于文件用完之后会自动关闭。
+>>>with open('workfile','r') as f:
+	read_data = f.read()
+
+标准模块json可以接受Python数据结构，并将他们转换为字符串表示形式，此过程称为
+序列化。从字符串表示形式重新构建数据结构称为反序列化。序列化和反序列化的过程
+中，表示该对象的字符串可以存储在文件或数据中，也可以通过网络连接传送给远程的
+机器。Python中文件的读写都是字符串，而要使用Python中的数据类型则要使用序列化
+中的json格式,这种适合列表和字典。要允许任意的对象可以使用pickle模块。
+>>>json.dumps([1,'simple','list'])
+json.dump(x,f)
+x = json.load(f)
+==========
+错误和异常
+==========
+捕获异常
+try:
+	.........
+	.........
+except ...:
+	.........
+	.........
+except ...:
+	.........
+	.........
+	raise
+.....
+.....
+else:
+	.........
+	.........
+finally:
+	.........
+	.........
+抛出异常
+raise语句允许程序员强制抛出一个指定的异常，而不去处理他。
+finally字句在程序离开try后都一定会被执行。
+==
+类
+==
+类对象支持两种操作：属性引用和实例化。
+类的迭代器中的两个内嵌的私有方法__iter__ __next__  
+=============================================================================
+=============================================================================
