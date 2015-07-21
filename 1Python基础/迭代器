@@ -1,0 +1,62 @@
+=============================================================================
+迭代器就是一个定义了__iter__()方法的类。
+__iter__()方法能返回任何实现了__next__()方法的对象。也就是说，__iter__()方法
+返回的值只能是__next__()方法接收和处理。所以一个实现了__iter__()和__next__()
+这两个方法的类可以被称作是迭代器。
+每个__iter__()方法都需要做的就是必须返回一个迭代器。如果只是返回self，意味着
+该类定义了__next__()方法，由他来关注整个迭代过程中的返回值。当__next__()方法
+*************************************************
+抛出StopIteration异常，调用者就知道迭代已经完成了。
+类被实例化创建后，__init__()方法被立即调用，__init__()方法被用作初始化实例。
+每个方法的第一个参数，包括__init__()方法，永远指向当前的类对象。习惯上，该参
+数叫self。但不是Python的保留字，仅仅是个命名习惯。
+实例化类时就像调用函数一样简单，将__init__()方法需要的参数传入。返回值就是新
+创建的对象。
+*************************************************
+生成器是一类特殊迭代器。一个产生值的函数yield是一种产生一个迭代器却不需要构建
+迭代器的小巧的方法。
+*************************************************
+class Fib:
+	'''生成数列的迭代器'''
+	def __init__(self,max):
+		self.max = max
+	def __iter__(self):
+		self.a = 0
+		self.b = 1
+		return self
+	def __next__(self):
+		fib = self.a
+		if fib > self.max:
+			raise StopIteration
+		self.a,self.b = self.b, self.a+self.b
+		return fib
+****************************
+self.max是实例变量。与作为参数传入__init__()方法的max完全是两回事。self.max是
+实例内”全局“的。可以在其他方法中访问它。self.max在__init__()方法中定义。这个
+实例变量self.max在__next__()方法中引用。
+*****************************************
+生成器
+======
+>>>unique_characters = {'E','D','M','O','N','S','R','Y'}
+>>>gen = (ord(c) for c in unique_characters)
+>>>gen
+<generator object <genexpr> at 0x000000000>
+>>>next(gen)
+69
+>>>next(gen)
+68
+>>>tuple(ord(c) for c in unique_characters)
+>>>list(ord(c) for c in unique_characters)
+>>>set(ord(c) for c in unique_characters)
+***********************
+def ord_map(a_string):
+	for c in a_string:
+		yield ord(c)
+***********************
+def reverse(data):
+	for index range(len(data)-1,-1,-1):
+		yield data[index]
+>>>for char in reverse('golf'):
+	print(char)
+=============================================================================
+=============================================================================
