@@ -1,0 +1,122 @@
+=============================================================================
+os模块
+======
+此模块提供了很多与操作系统交互的函数。
+针对日常的文件和目录管理任务，shutil模块提供了一个易于使用的高级接口。
+=============================================================================
+glob模块
+========
+glob模块提供了一个函数用于从目录通配符搜索中生成文件列表。
+>>>import glob
+>>>glob.glob('*.py')
+=============================================================================
+sys模块
+=======
+命令行参数以链表形式存储于sys模块的argv变量。
+python demo.py one two three
+>>>import sys
+>>>print(sys.argv)
+['demo.py','one','two','three']
+getopt模块使用UNIX getopt()函数处理sys.argv。更多的复杂命令行处理由argparse模
+块提供。sys还有stdin,stdout,stderr属性。
+=============================================================================
+re模块
+======
+此模块为高级字符串提供了正规表达式工具。
+=============================================================================
+math模块和random模块
+====================
+math模块为浮点运算提供了对底层C函数库的访问。
+random提供了生成随机数的工具。
+=============================================================================
+datetime模块
+============
+为日期和时间处理同时提供了简单和复杂的方法。并支持时区处理。
+=============================================================================
+zlib gzip bz2 lzma zipfil tarfile模块
+======================================
+这样的模块提供了直接支持通用的数据打包和压缩格式。
+=============================================================================
+timeit模块
+==========
+此模块提供性能度量工具。相对于timeit的细粒度，profile pstats模块提供了针对更
+大代码块的时间度量工具。
+=============================================================================
+测试模块
+========
+doctest模块提供了一个工具。扫描模块并根据程序中内嵌的文档字符串执行测试。允许
+doctest模块确认代码的结果是否与文档一致。
+unittest模块不像doctest模块，他可以在一个独立的文件里提供一个更全面的测试集。
+
+def avarage(values):
+	"""Computes the arithmetic mean of a list of numbers.
+	>>>print(average([20,30,70]))
+	40.0
+	"""
+	return sum(values)/len(values)
+
+import doctest
+doctest.testmod() 
+=============================================================================
+threading模块和queue模块
+========================
+线程是一个分离无顺序依赖关系任务的技术。一个有关的用途是在I/O的同时其它线程可
+以并行计算。多线程应用程序的主要挑战是协调线程，诸如线程间共享数据或其它资源。
+为了达到那个目的，线程模块提供了许多同步化的原生支持，包括：锁，事件，条件变
+量和信号灯。threading模块用起来比较的复杂。
+任务协调的首选方法是把对一个资源的所有访问集中在一个单独的线程中，然后使用
+queue模块用那个线程服务其他线程的请求。为内部线程通信和协调而使用Queue对象的
+应用程序更易于设计，更可读，并且更可靠。
+import threading,zipfile
+
+class AsyncZip(threading.Thread):
+	def __init__(self,infile,outfile):
+		threading.Thread.__init__(self)
+		self.infile = infile
+		self.outfile = outfile
+	def run(self):
+		f = zipfile.ZipFile(self.outfile,'w',zipfile.ZIP_DEFLATED)
+		f.write(self.infile)
+		f.close()
+		print('Finished background zip of:',self.infile)
+
+background = AsyncZip('mydata.txt','myarchive.zip')
+background.start()
+print('The main program continues to run in foreground.')
+
+background.join() #Wait for the background task to finish
+print('Main program waited until background was done.')
+=============================================================================
+logging模块
+===========
+默认情况下捕获信息和调试信息并将输出发送到标准错误流。其它可选的路由信息方式
+通过email，数据报文，socket或者HTTP Server。基于消息属性，新的过滤器可以选择
+不同的路由：DEBUG,INFO,WARNING,ERROR和CRITICAL。
+日志系统可以直接在Python代码中定制，也可以不经过应用程序直接在一个用户可编辑
+的配置文件中加载。
+import logging
+logging.debug('Debugging information')
+logging.info('Informational message')
+logging.warning('Warning:config %s not found','server.conf')
+logging.error('Error occurred')
+logging.critical('Critical error --shutting down')
+=============================================================================
+xmlrpc.client和xmlrpc.server模块
+================================
+让远程过程调用变得轻而易举。无需拥有XML的知识或处理XML。
+=============================================================================
+xml.dom xml.sax csv
+===================
+为流行的信息交换格式提供了强大的支持。这些模块和包大大简化了Python应用程序和
+其它工具之间的数据交换。
+=============================================================================
+email模块
+=========
+此模块是一个管理邮件信息的库。包含构造或解析复杂消息机构及实现互联网编码和头
+协议的完整工具集。而smtplib和poplib模块只用发送和接受信息就可以。
+=============================================================================
+国际化
+======
+国际化由gettext,local和codecs包支持。
+=============================================================================
+=============================================================================
