@@ -1,0 +1,25 @@
+#对不原生支持比较操作的对象排序
+#内建的sorted()函数可接受一个用来传递可调用对象(callable)的参数key,而该可调用
+#对象会返回带排序对象中的某些值，sorted则利用这些值来比较对象。
+>>>class User:
+	def __init__(self,user_id):
+		self.user_id = user_id
+	def __repr__(self):
+		return 'User({})'.format(self.user_id)
+>>>users = [User(23),User(3),User(99)]
+>>>users
+[User(23),User(3),User(99)]
+>>>sorted(users,key=lambda u: u.user_id)
+[User(3),User(23),User(99)]
+
+#除了可以用lambda表达式外，另一种方式是使用operator.attrgetter()。
+>>>from operator import attrgetter
+>>>sorted(users,key=attrgetter('user_id'))
+[User(3),User(23),User(99)]
+
+by_name = sorted(users,key=attrgetter('last_name','first_name'))
+>>>min(users,key=attrgetter('user_id')
+User(3)
+>>>max(users,key=attrgetter('user_id')
+User(99)
+
