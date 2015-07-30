@@ -1,0 +1,18 @@
+#针对任意多的分隔符拆分字符串
+
+#re.split()可以为分隔符指定多个模式
+#分隔符可以是逗号，分号或者空格符（后面可跟着任意数量的额外空格）
+>>>line = 'asdf fjdk; afed, fjek,asdf,    foo'
+>>>import re
+>>>re.split(r'[;,\s]\s*',line)
+['asdf','fjdk','afed','fjek','asdf','foo']
+
+#使用re.split()时，需要小心正则表达式模式中的捕获组(capture group)是否包含在
+#括号中。如果用到了捕获组，那么匹配的文本也会包含在最终结果中。
+>>>fiedlds = re.split(r'(;|,|\s)\s*',line)
+>>>fields
+['asdf',' ','fjdf',';','afed',',','fjek',',','asdf',',','foo']
+#如果不想在结果中看到分隔字符，仍想用正则进行分组，要确保用的是非捕获组，
+#以(?:...)的形式指定。
+>>>re.split(r'(?:,|;|\s)\s*',line)
+['asdf','fjdk','afed',fjek',asdf','foo']

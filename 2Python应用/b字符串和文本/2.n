@@ -1,0 +1,36 @@
+#以固定的列数重新格式化文本
+#textwrap模块能够以简单直接的方式对文本格式做整理使其适合与打印，尤其是当希望
+#输出结果能很好地显示在终端上。
+#关于终端的尺寸大小，可以通过os.get_terminal_size()来获取。
+>>>import os 
+>>>os.get_terminal_size().columns
+80
+#textwrap.fill()方法的选项可以用来控制如何处理制表符，句号等。
+>>>import textwrap
+>>>s = "Look into my eyes, look into my eyes, the eyes, the eyes, \
+the eyes, not around the eyes, don't look around the eyes, \
+look into my eyes, you're under."
+
+>>>print(textwrap.fill(s,70))
+Look into my eyes, look into my eyes, the eyes, the eyess, the eyes,
+not around the eyes, don't look around the eyes, look into my eyes,
+you're under.
+
+>>>print(textwrap.fill(s,40))
+Look into my eyes, look into my eyes,
+the eyes, the eyes, the eyes, not around
+the eyes, don't look around the eyes,
+look into my eyes, you're under.
+
+>>>print(textwrap.fill(s,40,initial_indent=' '))
+Look into my eyes, look into my
+eyes, the eyes, the eyes, the eyes, not
+around the eyes, don't look around the
+eyes, look into my eyes, you're under.
+
+>>>print(textwrap.fill(s,40,subsequent_indent=' '))
+Look into my eyes, look into my eyes,
+the eyes, the eyes, the eyes, not
+around the eyes, don't look around
+the eyes, look into my eyes, you're
+under.
