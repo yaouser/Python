@@ -1,0 +1,27 @@
+#读写文本数据
+#使用带有rt模式的open()函数读取文本文件。
+#写入一个文本文件，使用带有wt模式的open()函数，如果之前文本内容存在则清楚并
+#覆盖掉，如果是在以存在文件中添加内容，使用at模式open()函数。
+#模式 rt readtext wt writetext at appendtext
+#open() encoding='ascii' newline='' errors='replace' errors='ignore'
+
+with open('somefile.txt','wt') as f:
+	f.write(text1)
+	f.write(text2)
+
+with open('somefile.txt','wt') as f:
+	print(line1,file=f)
+	print(line2,file=f)
+
+f = open('somefile.txt','rt')
+data = f.read()
+f.close()
+
+with open('somefile.txt','rt',newline='') as f:
+	...
+
+>>>f = open('sample.txt','rt',encodeing='ascii',errors='replace')
+>>>f.read()
+
+>>>g = open('sample.txt','rt',encoding='ascii',errors='ignore')
+>>>g.read()

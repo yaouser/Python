@@ -1,0 +1,20 @@
+#增加或改变已打开文件的编码
+#在不关闭一个已打开的文件前提下增加或改变它的Unicode编码
+#想给一个以二进制模式打开的问文件加Unicode编码/解码方式，可以使用
+#io.TextIOWrapper()对象包装它。
+
+import urllib.request
+import io
+
+u = urllib.request.urlopen('http://www.python.org')
+f = io.TextIOWrapper(u,encoding='utf-8')
+text = f.read()
+
+
+>>>import sys
+>>>sys.stdout.encoding
+'UTF-8'
+>>>sys.stdout = io.TextIOWrapper(sys.stdout.detach(),encoding='latin-1')
+>>>sys.stdout.encoding
+'latin-1'
+

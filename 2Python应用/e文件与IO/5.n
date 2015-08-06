@@ -1,0 +1,27 @@
+#忽略文件名编码
+#使用原始文件名执行文件的I/O操作，也就是说文件名并没有经过系统默认编码去解码
+#或编码。
+#sys.getfilesystemencoding()返回文本编码来编码或解码
+
+>>>sys.getfilesystemencoding()
+'utf-8'
+
+>>> # Wrte a file using a unicode filename
+>>> with open('jalape\xf1o.txt', 'w') as f:
+...     f.write('Spicy!')
+...
+6
+>>> # Directory listing (decoded)
+>>> import os
+>>> os.listdir('.')
+['jalapeño.txt']
+
+>>> # Directory listing (raw)
+>>> os.listdir(b'.') # Note: byte string
+[b'jalapen\xcc\x83o.txt']
+
+>>> # Open file with raw filename
+>>> with open(b'jalapen\xcc\x83o.txt') as f:
+...     print(f.read())
+...
+Spicy!
