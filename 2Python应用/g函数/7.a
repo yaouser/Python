@@ -1,0 +1,66 @@
+#可接受任意数量参数的函数和关键字参数
+
+#为了能让一个函数接受任意数量的位置参数，可以使用一个*参数。
+#带有*参数（位置参数）实际上是一个元组，当作一个序列来进行处理。
+#如果希望函数的某些参数强制使用关键字参数传递，只需将强制关键字参数放到某个*参
+#数或者当个*后面参数就能达到这种效果。
+
+#为了接受任意数量关键字参数，使用一个以**开头的参数。
+#带有**参数（关键字参数）实际是一个字典。
+
+#如果希望某个函数能同时接受数量的位置参数和关键字参数，可以同时使用*和**。
+#*参数只能出现在函数定义中最后一个位置参数后面，而**参数只能出现在最有一个参数。
+#在*参数后面仍然可以定义其他参数。
+
+def a(x,*args,y):
+	pass
+
+def b(x,*args,y,**kwargs):
+	pass
+
+def anyargs(*args,**kwargs):
+	print(args) #A tuple
+	print(kwargs) #A dict
+
+=================================================
+def recv(maxsize,*,block):
+	'Receives a message'
+	pass
+
+#recv(1024,True) #error
+#recv(1024,block=True) #OK
+
+def mininum(*values,clip=None):
+	m = min(values)
+	if clip is not None:
+		m = clip if clip > m else m
+	return m
+
+#minimum(1,5,2,-5,10) #Return -5
+#minimum(1,5,2,-5,10,clip=0) #Returns 0
+=================================================
+def avg(first,*rest):
+	return(first + sum(rest))/(1 + len(rest))
+
+#use
+avg(1,2) #1.5
+avg(1,2,3,4) #2.5
+
+==================================================
+import html
+
+def make_element(name,value,**attrs):
+	keyvals = ['%s="%s"'%item for item in attrs.items()]
+	attr_str = ''.join(keyvals)
+	element = '<{name}{attrs}>{value}</{name}>'.format(
+		name = name,
+		attrs = attr_str,
+		value = html.escape(value))
+	return element
+
+#use
+make_element('item','Albatross',size='large',quantity=6)
+#<item size="large" quantity="6">Albatross</item>'
+
+make_element('p','<spam>')
+#<p>&lt;spam&gt;</p>
