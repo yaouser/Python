@@ -1,0 +1,33 @@
+#改变对象的字符串显示
+#要改变一个实例的字符串表示，可重新定义它的__str__()和__repr__()方法
+#__repr__()方法返回一个实例的代码表示形式，通常用来重新构造这个实例。
+#__repr__()函数返回这个字符串，跟使用交互式解释器显示的值是一样的。
+
+class Pair:
+	def __init__(self,x,y):
+		self.x = x
+		self.y = y
+
+	def __repr__(self):
+		return 'Pair({0.x!r},{0.y!r})'.format(self)
+
+	def __str__(self):
+		return '({0.x!s},{0.y!s})'.format(self)
+
+
+#use
+>>>p = Pair(3,4)
+>>>p
+Pair(3,4) #__repr__() output
+>>>print(p)
+(3,4) #__str__() output
+
+====================================
+#!r格式化代码指明输出使用__repr__()来代替默认的__str__()
+#如果__str__()没有被定义，那么就会使用__repr__()来代替输出
+
+>>>p = Pair(3,4)
+>>>print('p is {0!r}'.format(p))
+p is Pair(3,4)
+>>>print('p is {0}'.format(p))
+p is (3,4)
