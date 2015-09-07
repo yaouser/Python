@@ -1,0 +1,40 @@
+#构建一个模块的层级包
+#想要将自己的代码组织形成自己的模块
+
+========================================
+#形成模块的时候要注意在模块的每一个目录中确保定义有一个__init__.py文件
+
+graphics/
+	__init__.py
+	primitive/
+		__init__.py
+		line.py
+		file.py
+		text.py
+	formats/
+		__init__.py
+		png.py
+		jpg.py
+
+
+#可以通过各种的import语句来引入模块
+
+import graphics.primitive.line
+from graphics.primitive import line
+import graphics.formats.jpg as jpg  #重命名引入的模块名
+
+========================================================
+#一旦声明了导入的import graphics语句,这个文件graphics/__init__.py就会被导入,
+#形成graphics名字空间的内容.文件__init__.py可以为空的.
+
+#通常__init__.py不是空的,它通常会包括import语句的代码
+#这样来导入包的子模块
+
+#graphics/formats/__init__.py
+from . import jpg
+from . import png
+
+#否则的话要导入两个模块的话需要这样
+
+import graphics.formats.jpg
+import graphics.formats.png
