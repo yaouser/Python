@@ -1,0 +1,38 @@
+#通过重定向/管道/文件接受输入
+Python's built-in fileinput module
+fileinput.input()
+
+============================================
+
+#filein.py 这个文件的作用是从命令行中接受标准输入
+--------------------------------------------------
+#!/usr/bin/env python3
+import fileinput
+with fileinput.input() as f_input:
+	for line in f_input:
+		print(line,end='')
+----------------------------------------
+
+>ls | ./filein.py		#打印目录列表到标准输出 管道输入
+>./filein.py /etc/passwd	#python从命令行中接受文件 文件输入
+>./filein.py < /etc/passwd	#使用重定向给Python输入  重定向输入
+
+---------------------------------------------------------------------
+
+#由于fileinput.input()返回的是文件实例,还有filename() lineno()方法来对文件管理
+>>>import fileinput
+>>>with fileinput.input('/etc/passwd') as f:
+>>>	for line in f:
+		print(f.filename(),f.lineno(),line,end='')
+....
+/etc/passwd 1 ##
+/etc/passwd 2 ##User Database
+/etc/passwd 3 ##
+
+-----------------------------------
+
+区别
+#!/usr/bin/python3	直接使用绝对路径的Python3解释器
+#!/usr/bin/env python3	在系统的环境变量中搜寻Python3解释器
+
+=====================================================================
